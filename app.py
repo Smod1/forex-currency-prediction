@@ -12,6 +12,7 @@ st.title("Forex Currency Prediction By Sarun Modi")
 with open("models/model_paths.json", "r") as file:
     model_paths = json.load(file)
 currencies = [key for key in model_paths.keys()]
+st.header("Currency and Best Model")
 
 def load_model(currency):
     model_to_load = model_paths[currency]
@@ -38,6 +39,7 @@ model, name_of_model = load_model(chosen_currency)
 st.text(body = f"Best model for {chosen_currency} is {name_of_model}")
 
 st.header("FORECASTING")
+st.subheader("Forecasted values are in format USD/CURRENCY")
 # forecasting horizon input number of days
 horizon = st.slider(label = "Choose forecast horizon (days)",
                     min_value = 1,
@@ -106,7 +108,9 @@ def forecast_LSTM(model, series, horizon, lookback=20):
     # mirrors the recursive forecasting loop inside fit_LSTM
     # NOTE: refits a scaler on currently available history
     scaler = MinMaxScaler()
-    scaled = scaler.fit_transform(series.to_numpy().reshape(-1, 1))
+    scaled = scaler.fit_transform(series.to_numpy().reshape(-1, 1)) # this will be inconsistent, acknowledge mistake
+    # should have saved scaler during training. as here i am scaling on full dataset, but in training i only scaled
+    # on the training set.
     history_scaled = scaled[-lookback:].copy()
     predictions_scaled = []
     for i in range(horizon):
