@@ -3,7 +3,8 @@ import keras
 import streamlit as st
 import pandas as pd
 import json
-
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 from prophet.serialize import model_from_json
 
 st.set_page_config(page_title = "Forex Currency Prediction")
@@ -32,14 +33,18 @@ def load_model(currency):
 
 # create dropdown
 chosen_currency = st.selectbox("Choose Currency", currencies)
-best_model_for_currency = load_model(chosen_currency)
+model, name_of_model = load_model(chosen_currency)
 
+st.text(body = f"Best model for {chosen_currency} is {name_of_model}")
+
+st.header("FORECASTING")
 # forecasting horizon input number of days
 horizon = st.slider(label = "Choose forecast horizon (days)",
                     min_value = 1,
                     max_value = 60,
                     value = 30, # defaults to forecast 30 days
                     step = 1)
+
 
 
 
