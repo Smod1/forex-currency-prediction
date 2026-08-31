@@ -5,7 +5,7 @@
 # EXPOSE instruction informs Docker that container listens on specified network ports at runtime. Streamlit default port is 8501
 # HEALTHCHECK tells Docker how to test a container to check if it still working
 # ENTRYPOINT allows you to configure a container that will run as an executable
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
